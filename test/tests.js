@@ -26,7 +26,7 @@ describe('Cross Origin Requests', function() {
   });
 
   it('should allow all origins', function() {
-    return assert(result, "header.access-control-allow-origin").to.equal('*');
+    return assert(result, "header").to.have.deep.property('access-control-allow-origin','*');
   });
 });
 
@@ -42,7 +42,7 @@ describe('Create Todo Item', function() {
   });
 
   it('should receive a location hyperlink', function() {
-    return assert(result, 'header.location').to.match(/^https?:\/\/.+\/todos\/[\d]+$/);
+    return assert(result, 'header').to.have.deep.property('location').and.match(/^https?:\/\/.+\/todos\/[\d]+$/);
   });
 
   it('should create the item', function() {
@@ -50,7 +50,7 @@ describe('Create Todo Item', function() {
       return get(res.header['location']);
     });
 
-    return assert(item, "body.title").that.equals('Walk the dog');
+    return assert(item, "body").to.have.deep.property('title','Walk the dog');
   });
 
   after(function () {
@@ -70,12 +70,12 @@ describe('Update Todo Item', function() {
 
   it('should have completed set to true after PUT update', function() {
     var result = update(location, 'PUT', {'completed': true});
-    return assert(result, "body.completed").to.be.true;
+    return assert(result, "body").to.have.deep.property("completed").and.to.be.true;
   });
 
   it('should have completed set to true after PATCH update', function() {
     var result = update(location, 'PATCH', {'completed': true});
-    return assert(result, "body.completed").to.be.true;
+    return assert(result, "body").to.have.deep.property("completed").and.to.be.true;
   });
 
   after(function () {
